@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: nginx
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: dungez/nginx-test
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d
+              name: config-nginx
+          ports:
+          - containerPort: 80
+            name: http
+          - containerPort: 443
+            name: https
+      volumes:
+        - name: config-nginx
+          configMap:
+             name: config-nginx
+             items:
+              - key: nginx.conf
+                path: default.conf
+            
+
